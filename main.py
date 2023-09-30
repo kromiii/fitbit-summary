@@ -5,7 +5,7 @@ ex: main()
 """
 import datetime
 from graph import graph_heart_spo
-from pytweet import Pytweet
+import pytweet
 from api import heartbeat, spo2_intraday, activity_summary, sleep_log
 from consts import TWEET_IMAGE, TWITTER
 
@@ -74,8 +74,8 @@ def main():
 
     # 歩数、フロア数、カロリーをactivityから取得
     act_summary = act["summary"]
+    print(act_summary)
     steps = act_summary["steps"]
-    floors = act_summary["floors"]
     calories = act_summary["caloriesOut"]
 
     # 睡眠情報をsleepから取得
@@ -93,7 +93,6 @@ def main():
     msg += "[" + today() + "]" + "\n"
     msg += "👟運動情報👟\n"
     msg += "歩数: " + str(steps) + "\n"
-    msg += "昇ったフロア数: " + str(floors) + "\n"
     msg += "消費cal: " + str(calories) + "\n"
     msg += "💤睡眠情報💤\n"
     msg += "ベッド時間: " + min_to_hr(bed_time) + "\n"
