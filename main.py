@@ -9,7 +9,7 @@ from pytweet import Pytweet
 from api import heartbeat, spo2_intraday, activity_summary, sleep_log
 from consts import TWEET_IMAGE, TWITTER
 
-TAGS = "#Fitbit #Fitbit_Web_API #Fitbitはサードパーティアプリを解放しろ"
+TAGS = "#Fitbit #Fitbit_Web_API"
 
 
 def min_to_hr(t: int) -> str:
@@ -66,9 +66,7 @@ def main():
     # error時はerrorツイートをして終了
     if is_error or is_empty:
         msg = "[" + today() + "]" + "\n"
-        msg += "Googleよ！インターネットの世界を牛耳り、世界を手中に納めたつもりでいられるのも今のうちだ！"\
-            "前世紀の巨人があなたを倒さんと、再び立ち上がったのだ！"\
-            "「F I T B I T を 解 放 し ろ !」聞こえるか、MSの咆哮が！\n"
+        msg += "今日はエラーになったみたい\n"
         msg += TAGS
         twitter = Pytweet(TWITTER)
         twitter.tweet(msg)
@@ -91,7 +89,7 @@ def main():
     wake = 0 if not is_stages else sleep_summary["stages"]["wake"]
 
     # 上記からメッセージを生成
-    msg = "💛全力君・絶望の鼓動(Heart-Beat)💛\n"
+    msg = "🏃くろみーの日報\n"
     msg += "[" + today() + "]" + "\n"
     msg += "👟運動情報👟\n"
     msg += "歩数: " + str(steps) + "\n"
