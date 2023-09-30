@@ -5,7 +5,7 @@ cronで実行する（プロジェクトのルートフォルダから実行し�
 """
 
 from pathlib import Path
-
+import json
 
 TWEET_IMAGE = Path(__file__).parent / "tweet.png"
-TWITTER = Path(__file__).parent / "twitter_conf.json"
+TWITTER = json.load(open(Path(__file__).parent / "twitter_conf.json", "r"))

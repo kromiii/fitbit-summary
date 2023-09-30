@@ -5,7 +5,7 @@ ex: main()
 """
 import datetime
 from graph import graph_heart_spo
-import pytweet
+import tweepy
 from api import heartbeat, spo2_intraday, activity_summary, sleep_log
 from consts import TWEET_IMAGE, TWITTER
 
@@ -49,6 +49,21 @@ def main():
     sleep = sleep_log().json()
     act = activity_summary().json()
 
+    # Twitter APIの認証
+    consumer_key = TWITTER["CONSUMER_KEY"]
+    consumer_secret = TWITTER["CONSUMER_SECRET"]
+    access_token = TWITTER["ACCESS_TOKEN"]
+    access_token_secret = TWITTER["ACCESS_SECRET"]
+    client = tweepy.Client(
+        consumer_key=consumer_key, consumer_secret=consumer_secret,
+        access_token=access_token, access_token_secret=access_token_secret
+    )
+    
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_token_secret)
+
+    api = tweepy.API(auth)
+
     # データ取得にエラーが無いかチェック
     is_error = heart.get("errors") is not None \
         or spo.get("errors") is not None \
@@ -68,13 +83,11 @@ def main():
         msg = "[" + today() + "]" + "\n"
         msg += "今日はエラーになったみたい\n"
         msg += TAGS
-        twitter = Pytweet(TWITTER)
         twitter.tweet(msg)
         return
 
     # 歩数、フロア数、カロリーをactivityから取得
     act_summary = act["summary"]
-    print(act_summary)
     steps = act_summary["steps"]
     calories = act_summary["caloriesOut"]
 
@@ -106,8 +119,7 @@ def main():
 
     # tweetする
     # tweet(msg, TWEET_IMAGE)
-    twitter = Pytweet(TWITTER)
-    twitter.tweet(msg, TWEET_IMAGE)
-
+    media = api.media_upload(filename=TWEET_IMAGE)
+    client.create_tweet(text=msg, media_ids=[media.media_id])
 
 main()
