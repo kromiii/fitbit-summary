@@ -3,11 +3,11 @@ Fitbit APIで心拍、アクティビティ、睡眠、SPO2情報を取得。
 グラフ化してtwitterに投稿する。
 ex: main()
 """
-import datetime
-from graph import graph_heart_spo
-import tweepy
-from api import heartbeat, spo2_intraday, activity_summary, sleep_log
-from consts import TWEET_IMAGE, TWITTER
+# import datetime
+# from graph import graph_heart_spo
+# import tweepy
+# from api import heartbeat, spo2_intraday, activity_summary, sleep_log
+# from consts import TWEET_IMAGE, TWITTER
 
 TAGS = "#Fitbit #Fitbit_Web_API"
 
