@@ -1,7 +1,8 @@
-name: Schedule Workflow
+name: Post Fitbit summary to Twitter
 on:
   schedule:
-    - cron: "0 0 * * *"
+   - cron: '5 14 * * *' # 23:05 JST
+  workflow_dispatch:
 
 jobs:
   build:
@@ -9,14 +10,32 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Set up Python
+      - name: Set up Python 3.8
         uses: actions/setup-python@v2
         with:
-          python-version: 3.x
+          python-version: 3.8
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      - name: Run tests
+          pip install matplotlib
+          pip install tweepy
+      # - name: Update tokens
+      #   run: |
+      #     python update_tokens.py
+      #   env: 
+      #     FB_CLIENT_ID: ${{ secrets.FB_CLIENT_ID }}
+      #     FB_ACCESS_TOKEN: ${{ secrets.FB_ACCESS_TOKEN }}
+      #     FB_REFRESH_TOKEN: ${{ secrets.FB_REFRESH_TOKEN }}
+      - name: Post summary to Twitter
         run: |
-          python -m unittest discover -s tests -p "test_*.py"
+          python main.py
+        env: 
+          TWITTER_CONSUMER_KEY: ${{ secrets.TW_CONSUMER_KEY }}
+          TWITTER_CONSUMER_SECRET: ${{ secrets.TW_CONSUMER_SECRET }}
+          TWITTER_ACCESS_TOKEN: ${{ secrets.TW_ACCESS_TOKEN }}
+          TWITTER_ACCESS_TOKEN_SECRET: ${{ secrets.TW_ACCESS_TOKEN_SECRET }}
+      - name: Archive tokens
+        uses: actions/upload-artifact@v3
+        with:
+          name: fitbit-api-tokens
+          path: test.txt

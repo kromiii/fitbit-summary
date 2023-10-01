@@ -1,6 +1,7 @@
 # [Fitbit-Summary]Fitbitを使った健康報告バッチ
 
-毎晩23時にFitbit APIを使って健康情報をTwitterに投稿する。プログラムの実行は、サーバのcronで登録する。
+毎晩23時にFitbit APIを使って健康情報をTwitterに投稿する
+プログラムの実行はGithub Action で行う。
 
 ## Fitbit Web API
 
@@ -9,43 +10,21 @@
 ## エントリーポイント
 
 ```bash
-# linux
-python3 ./main.py
-# windows
 python ./main.py
 ```
 
 ## Dependencies
 
-### *requests*
-
-```python
-pip install requests
-```
-
-### pytweet（githubからクローン）
-
-プロジェクトの直下にクローン。
-
-```bash
-git clone https://github.com/zenryokukun/pytweet.git
-```
-
-モジュール更新時はgit pullすること。メディア・アップロードは追加され次第対応予定なので、
-近いうちに更新する予定。
-
-```bash
-cd pytweet
-git pull
-```
-
+* requests
+* tweepy
+* matplotlib
 
 ## スクリプトについて
 
 - *main.py* エントリーポイント
 - *api.py* Fitbit Web APIの実行
 - *graph.py* 心拍数やSpO2データをグラフ化し画像にする
-- *pytweet/* Twitter API V2対応の外部パッケージ。(https://github.com/zenryokukun/pytweet.git)
+- *consts.py* 定数を定義する
 
 ## 必要なファイル
 
@@ -81,14 +60,9 @@ git pull
 
 - **heart-spo.png** tweetする画像
 
-## cron（備忘）
+## Github Action
 
-### 登録スクリプト
-
-ログインスクリプトが流れないのでコマンドもフルパスで登録
-```bash
-/usr/bin/python3 /home/crypto/fitbit/main.py
-```
+環境変数にconf.json,twitter_conf.jsonの内容を設定する。
 
 ### スケジュール
 

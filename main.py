@@ -43,6 +43,9 @@ def main():
     Fitbit APIで心拍、アクティビティ、睡眠、SPO2情報を取得。
     グラフ化してtwitterに投稿
     """
+    with open("test.txt", "w") as file:
+        file.write("test")
+    return "finish"
     # データ取得
     heart = heartbeat().json()
     spo = spo2_intraday().json()
