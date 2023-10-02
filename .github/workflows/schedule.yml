@@ -13,7 +13,7 @@ jobs:
       - name: Set up Python 3.8
         uses: actions/setup-python@v2
         with:
-          python-version: 3.10
+          python-version: 3.8
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -22,10 +22,11 @@ jobs:
           pip install google-cloud-storage
       - name: Post summary to Twitter
         run: |
+          echo -n '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}' > key.json
           python main.py
         env: 
+          GOOGLE_APPLICATION_CREDENTIALS: key.json
           TWITTER_CONSUMER_KEY: ${{ secrets.TW_CONSUMER_KEY }}
           TWITTER_CONSUMER_SECRET: ${{ secrets.TW_CONSUMER_SECRET }}
           TWITTER_ACCESS_TOKEN: ${{ secrets.TW_ACCESS_TOKEN }}
           TWITTER_ACCESS_TOKEN_SECRET: ${{ secrets.TW_ACCESS_TOKEN_SECRET }}
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
