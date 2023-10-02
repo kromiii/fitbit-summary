@@ -19,21 +19,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install matplotlib
           pip install tweepy
-      - name: Download artifacts
-        uses: actions/download-artifact@v3
-        id: test
-        with:
-          name: fitbit-api-tokens
-          path: .
-      - name: 'Echo download path'
-        run: echo ${{steps.test.outputs.download-path}}
-      # - name: Update tokens
-      #   run: |
-      #     python update_tokens.py
-      #   env: 
-      #     FB_CLIENT_ID: ${{ secrets.FB_CLIENT_ID }}
-      #     FB_ACCESS_TOKEN: ${{ secrets.FB_ACCESS_TOKEN }}
-      #     FB_REFRESH_TOKEN: ${{ secrets.FB_REFRESH_TOKEN }}
+          pip install google-cloud-storage
       - name: Post summary to Twitter
         run: |
           python main.py
@@ -42,8 +28,4 @@ jobs:
           TWITTER_CONSUMER_SECRET: ${{ secrets.TW_CONSUMER_SECRET }}
           TWITTER_ACCESS_TOKEN: ${{ secrets.TW_ACCESS_TOKEN }}
           TWITTER_ACCESS_TOKEN_SECRET: ${{ secrets.TW_ACCESS_TOKEN_SECRET }}
-      - name: Archive tokens
-        uses: actions/upload-artifact@v3
-        with:
-          name: fitbit-api-tokens
-          path: test.txt
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
