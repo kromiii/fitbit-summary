@@ -8,4 +8,9 @@ from pathlib import Path
 import json
 
 TWEET_IMAGE = Path(__file__).parent / "tweet.png"
-TWITTER = json.load(open(Path(__file__).parent / "twitter_conf.json", "r"))
+TWITTER_CONF = Path(__file__).parent / "twitter_conf.json"
+# check if the file exists
+if not TWITTER_CONF.exists():
+  TWITTER = None
+else:
+  TWITTER = json.load(open(TWITTER_CONF, "r"))

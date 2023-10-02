@@ -8,6 +8,7 @@ from graph import graph_heart_spo
 import tweepy
 from api import heartbeat, spo2_intraday, activity_summary, sleep_log
 from consts import TWEET_IMAGE, TWITTER
+import os
 
 TAGS = "#Fitbit #Fitbit_Web_API"
 
@@ -50,10 +51,10 @@ def main():
     act = activity_summary().json()
 
     # Twitter APIの認証
-    consumer_key = TWITTER["CONSUMER_KEY"]
-    consumer_secret = TWITTER["CONSUMER_SECRET"]
-    access_token = TWITTER["ACCESS_TOKEN"]
-    access_token_secret = TWITTER["ACCESS_SECRET"]
+    consumer_key = TWITTER["CONSUMER_KEY"] if TWITTER is not None else os.environ["TW_CONSUMER_KEY"]
+    consumer_secret = TWITTER["CONSUMER_SECRET"] if TWITTER is not None else os.environ["TW_CONSUMER_SECRET"]
+    access_token = TWITTER["ACCESS_TOKEN"] if TWITTER is not None else os.environ["TW_ACCESS_TOKEN"]
+    access_token_secret = TWITTER["ACCESS_SECRET"] if TWITTER is not None else os.environ["TW_ACCESS_TOKEN_SECRET"]
     client = tweepy.Client(
         consumer_key=consumer_key, consumer_secret=consumer_secret,
         access_token=access_token, access_token_secret=access_token_secret

@@ -31,13 +31,6 @@ blob = bucket.blob(file_name)
 content = blob.download_as_text()
 
 conf = json.loads(content)
-# CONF_FILEPATH = Path(__file__).parent / "conf.json"
-
-# # 重要ファイルから読み取る
-# conf: Union[Conf, None] = None
-# with open(CONF_FILEPATH, "r", encoding="utf-8") as f:
-#     _conf: Conf = json.load(f)
-#     conf = _conf
 
 # セッション
 session = Session()
