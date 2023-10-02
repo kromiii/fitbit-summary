@@ -8,7 +8,7 @@ from pathlib import Path
 import json
 from typing import Dict, List, TypedDict, Union
 from requests import Session
-
+from google.cloud import storage
 
 class Conf(TypedDict):
     """conf.jsonの型"""
@@ -21,14 +21,23 @@ class Conf(TypedDict):
     redirect_url: str
 
 
-# トークン等の重要ファイル
-CONF_FILEPATH = Path(__file__).parent / "conf.json"
+# GCS から conf.json を取得
+bucket_name = 'fitbit-summary'
+file_name = 'conf.json'
 
-# 重要ファイルから読み取る
-conf: Union[Conf, None] = None
-with open(CONF_FILEPATH, "r", encoding="utf-8") as f:
-    _conf: Conf = json.load(f)
-    conf = _conf
+client = storage.Client()
+bucket = client.get_bucket(bucket_name)
+blob = bucket.blob(file_name)
+content = blob.download_as_text()
+
+conf = json.loads(content)
+# CONF_FILEPATH = Path(__file__).parent / "conf.json"
+
+# # 重要ファイルから読み取る
+# conf: Union[Conf, None] = None
+# with open(CONF_FILEPATH, "r", encoding="utf-8") as f:
+#     _conf: Conf = json.load(f)
+#     conf = _conf
 
 # セッション
 session = Session()
@@ -116,8 +125,12 @@ def refresh() -> None:
     conf["scope"] = res_data["scope"]
     conf["user_id"] = res_data["user_id"]
 
-    with open(CONF_FILEPATH, "w", encoding="utf-8") as f:
-        json.dump(conf, f, indent=2)
+    blob.upload_from_string(
+        data=json.dumps(conf),
+        content_type='application/json',
+    )
+    # with open(CONF_FILEPATH, "w", encoding="utf-8") as f:
+    #     json.dump(conf, f, indent=2)
 
 
 def request(method, url, **kw):
